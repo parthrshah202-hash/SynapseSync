@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "name": "synapse-sync-manifest",
+  "description": "State tracking manifest placeholder for SynapseSync processed items",
+  "last_synced_at": null,
+  "processed_files": []
+}
