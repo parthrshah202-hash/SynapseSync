@@ -84,15 +84,26 @@ def find_notion_notes_block(segment_text: str) -> Optional[Tuple[str, str]]:
         r"(?:^|\n)(?:\*\*|#+)?\s*([^\n]+?)\s*[-—]\s*Notion Notes\s*(?:\*\*)?\s*\n([\s\S]+)",
         re.IGNORECASE,
     )
-    m = header_pattern.search(segment_text)
-    if m:
+    pos = 0
+    candidate_blocks = []
+    while True:
+        m = header_pattern.search(segment_text, pos)
+        if not m:
+            break
         raw_title = m.group(1).strip()
         block_text = m.group(2).strip()
-        # If there are subsequent user turns (e.g. ## Human), cut block before them
         next_human = re.search(r"\n##\s+Human", block_text)
         if next_human:
             block_text = block_text[: next_human.start()].strip()
-        return clean_problem_title(raw_title), block_text
+        next_block = re.search(r"\n(?:\*\*|#+)?\s*[^\n]+?[-—]\s*Notion Notes", block_text, re.IGNORECASE)
+        if next_block:
+            block_text = block_text[: next_block.start()].strip()
+        candidate_blocks.append((clean_problem_title(raw_title), block_text))
+        pos = m.start() + len(m.group(1)) + 10
+
+    if candidate_blocks:
+        # Return the last block (most refined/up-to-date in the conversation)
+        return candidate_blocks[-1]
 
     # Pattern 2: Look for an assistant block with **Brute-Force or **Bucket:** or **Type:**
     approach_pattern = re.compile(
@@ -215,6 +226,10 @@ def parse_standardized_block(
             continue
         if k in parsed_sections and parsed_sections[k]:
             data[k] = parsed_sections[k]
+
+    # Optional Topic for routing
+    if domain == DOMAIN_DSA and "Topic" in parsed_sections and parsed_sections["Topic"]:
+        data["Topic"] = parsed_sections["Topic"]
 
     # Normalize Topic and Revision levels if present
     if "Topic" in data and domain == DOMAIN_DSA:

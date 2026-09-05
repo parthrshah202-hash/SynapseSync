@@ -178,6 +178,9 @@ def validate_contract(domain: str, segment_type: str, data: Dict[str, Any]) -> T
         return False, f"Missing required keys: {sorted(list(missing_keys))}"
 
     unexpected_keys = actual_keys - expected_keys
+    # Topic is accepted as optional routing metadata for DSA segments
+    if domain == DOMAIN_DSA:
+        unexpected_keys = unexpected_keys - {"Topic"}
     if unexpected_keys:
         return False, f"Unexpected keys present: {sorted(list(unexpected_keys))}"
 
