@@ -42,7 +42,7 @@ jobs:
           echo "GOOGLE_OAUTH_REFRESH_TOKEN=${{ secrets.GOOGLE_OAUTH_REFRESH_TOKEN }}" >> .env
 
       - name: Run Orchestration
-        run: python src/orchestrate.py
+        run: python -m src.orchestrate
 
       - name: Commit manifest if changed
         run: |
