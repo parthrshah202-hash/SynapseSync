@@ -121,13 +121,12 @@ def fetch_new_transcripts() -> List[Dict[str, Any]]:
             continue
             
         domain = classify_domain(content_str)
-        if domain:
-            new_transcripts.append({
-                "file_id": file_id,
-                "filename": filename,
-                "content": content_str,
-                "content_hash": content_hash,
-                "domain": domain
-            })
+        new_transcripts.append({
+            "file_id": file_id,
+            "filename": filename,
+            "content": content_str,
+            "content_hash": content_hash,
+            "domain": domain
+        })
             
     return new_transcripts

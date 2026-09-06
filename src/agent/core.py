@@ -1,6 +1,7 @@
 import os
 from typing import Any, Dict, List, Tuple
 
+import logging
 from src.extraction.contracts import DOMAIN_DSA, DOMAIN_SQL, TYPE_FIRST_SOLVE, TYPE_REVISION, normalize_dsa_topic
 from src.extraction.extractor import extract_transcript
 from src.notion_tools import (
@@ -13,6 +14,8 @@ from src.notion_tools import (
     resolve_data_source_id,
     search_problem,
 )
+
+logger = logging.getLogger(__name__)
 
 _dsa_db_map_cache: Dict[str, str] = {}
 _sql_db_cache: Dict[str, Tuple[str, Dict[str, Any]]] = {}
@@ -62,6 +65,7 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
     # 4. Route and Apply Mutations
     for result in results:
         if result.get("status") == "rejected":
+            logger.info(f"Segment rejected by extractor: {result.get('reason')}")
             final_results.append(result)
             continue
             
@@ -70,6 +74,8 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
         data = result["data"]
         problem_name = data.get("Problem")
         
+        logger.info(f"Processing segment - Domain: {domain}, Type: {entry_type}, Problem: '{problem_name}'")
+        
         page_id = None
         target_db = None
         schema = None
@@ -77,7 +83,9 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
         if domain == DOMAIN_SQL:
             target_db = resolved_sql_db_id
             schema = sql_schema
+            logger.info(f"Routing to SQL DB (ID: {target_db})")
             page_id = search_problem(client, target_db, str(problem_name), schema)
+            logger.info(f"Search result for '{problem_name}' in SQL DB: {'Found (Page ID: ' + page_id + ')' if page_id else 'Not found'}")
         elif domain == DOMAIN_DSA:
             topic = data.get("Topic")
             normalized_topic = normalize_dsa_topic(topic) if topic else None
@@ -85,9 +93,12 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
             
             if target_db:
                 schema = get_dsa_schema(target_db)
+                logger.info(f"Routing to DSA Topic '{normalized_topic}' (DB ID: {target_db})")
                 page_id = search_problem(client, target_db, str(problem_name), schema)
+                logger.info(f"Search result for '{problem_name}': {'Found (Page ID: ' + page_id + ')' if page_id else 'Not found'}")
             elif entry_type == TYPE_REVISION:
                 # Revision contracts do not require a Topic; search across discovered DSA topic databases
+                logger.info(f"Revision for '{problem_name}' lacks explicit topic. Searching across all DSA topics...")
                 matched_entries = []
                 for t_name, db_id in dsa_db_map.items():
                     s = get_dsa_schema(db_id)
@@ -98,20 +109,24 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
                 if len(matched_entries) == 1:
                     t_name, target_db, schema, page_id = matched_entries[0]
                     result["detected_topic"] = t_name
+                    logger.info(f"Found unique matching entry in topic '{t_name}' (Page ID: {page_id})")
                 elif len(matched_entries) > 1:
                     result["status"] = "needs_review"
                     result["reason"] = f"Ambiguous Revision routing: '{problem_name}' found in multiple topic databases: {[m[0] for m in matched_entries]}."
+                    logger.warning(result["reason"])
                     final_results.append(result)
                     continue
                 else:
                     result["status"] = "needs_review"
                     result["reason"] = f"Revision for '{problem_name}' has no matching problem entry in any DSA topic database."
+                    logger.warning(result["reason"])
                     final_results.append(result)
                     continue
             else:
                 # Ambiguous routing: unknown topic
                 result["status"] = "needs_review"
                 result["reason"] = f"Unknown DSA Topic '{topic}' (normalized: '{normalized_topic}')"
+                logger.warning(result["reason"])
                 final_results.append(result)
                 continue
         
@@ -127,9 +142,13 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
                 # Ambiguous routing: First Solve found existing entry
                 result["status"] = "needs_review"
                 result["reason"] = f"First Solve entry for '{problem_name}' already exists in database (page_id: {page_id})."
+                logger.warning(f"Guardrail failed: {result['reason']}")
             else:
                 if not dry_run:
+                    logger.info(f"Creating new problem entry for '{problem_name}'")
                     create_problem_entry(client, target_db, data, schema)
+                else:
+                    logger.info(f"[DRY RUN] Would create new problem entry for '{problem_name}'")
                 result["status"] = "completed"
                 
         elif entry_type == TYPE_REVISION:
@@ -137,6 +156,7 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
                 # Ambiguous routing: Revision with no matching problem
                 result["status"] = "needs_review"
                 result["reason"] = f"Revision for '{problem_name}' has no matching problem entry in database."
+                logger.warning(f"Guardrail failed: {result['reason']}")
                 result["notion_payload"] = {
                     "properties": properties,
                 }
@@ -146,7 +166,10 @@ def process_transcript(raw_markdown: str, dry_run: bool = True) -> List[Dict[str
                     "properties": properties,
                 }
                 if not dry_run:
+                    logger.info(f"Appending revision for '{problem_name}' (Page ID: {page_id})")
                     append_revision(client, page_id, data, schema)
+                else:
+                    logger.info(f"[DRY RUN] Would append revision for '{problem_name}' (Page ID: {page_id})")
                 result["status"] = "completed"
                 
         final_results.append(result)
