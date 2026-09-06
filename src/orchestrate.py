@@ -29,12 +29,14 @@ def run_orchestration(dry_run: bool = False, manifest_path: str = "manifest.json
         new_transcripts = fetch_new_transcripts()
     except Exception as e:
         logger.error(f"Failed to fetch transcripts: {e}")
-        return
-
+        raise
+        
     logger.info(f"Fetched {len(new_transcripts)} new valid files.")
     
     manifest = load_manifest(manifest_path)
     processed = manifest.get("processed", {})
+    
+    stats = {"processed": 0, "success": 0, "needs_review": 0, "failed": 0, "skipped": 0}
     
     for transcript in new_transcripts:
         file_id = transcript["file_id"]
@@ -51,13 +53,16 @@ def run_orchestration(dry_run: bool = False, manifest_path: str = "manifest.json
                 "status": "skipped_unclassified",
                 "content_hash": content_hash,
             }
+            stats["skipped"] += 1
             continue
             
         # Safety check: skip if already processed with same hash
         if file_id in processed and processed[file_id].get("content_hash") == content_hash:
             logger.info(f"Skipping already processed file: {filename}")
+            stats["skipped"] += 1
             continue
 
+        stats["processed"] += 1
         try:
             results = process_transcript(content, dry_run=dry_run)
             
@@ -77,15 +82,18 @@ def run_orchestration(dry_run: bool = False, manifest_path: str = "manifest.json
                     "content_hash": content_hash,
                     "payloads": needs_review_payloads
                 }
+                stats["needs_review"] += 1
             else:
                 logger.info(f"File {filename} processed successfully.")
                 processed[file_id] = {
                     "status": "success",
                     "content_hash": content_hash
                 }
+                stats["success"] += 1
                 
         except Exception as e:
             logger.error(f"Transient error processing {filename}: {e}", exc_info=True)
+            stats["failed"] += 1
             continue
             
     if not dry_run:
@@ -93,6 +101,14 @@ def run_orchestration(dry_run: bool = False, manifest_path: str = "manifest.json
         save_manifest(manifest, manifest_path)
     else:
         logger.info("Dry run complete. Manifest would have been updated.")
+
+    logger.info("=== Run Summary ===")
+    logger.info(f"Files Processed (new/modified): {stats['processed']}")
+    logger.info(f"Successfully Synced: {stats['success']}")
+    logger.info(f"Needs Review: {stats['needs_review']}")
+    logger.info(f"Failed: {stats['failed']}")
+    logger.info(f"Skipped (unclassified/unchanged): {stats['skipped']}")
+    logger.info("===================")
 
 if __name__ == "__main__":
     run_orchestration(dry_run=False)
