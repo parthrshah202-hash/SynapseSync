@@ -484,7 +484,7 @@ def get_pipeline_overview(
         "status": "operational" if manifest_summary.needs_review_count == 0 else "attention_needed",
         "total_manifest_processed": manifest_summary.total_processed,
         "success_count": manifest_summary.success_count,
-        "needs_review_count": manifest_summary.needs_review_count,
+        "needs_review_count": len(manifest_summary.review_items),
         "skipped_unclassified_count": manifest_summary.skipped_unclassified_count,
         "last_synced_at": manifest_summary.last_synced_at,
         "review_items_count": len(manifest_summary.review_items)
