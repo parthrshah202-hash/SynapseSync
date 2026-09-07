@@ -1,0 +1,398 @@
+/* SynapseSync Dashboard - Tactile Paper Elevation & Luxury Editorial Print Theme */
+
+/* Editorial Typography Pairing:
+   - Primary Headings: Classic High-End Serif (Playfair Display / Newsreader)
+   - Body & Controls: Clean Modern Sans-Serif (Plus Jakarta Sans / Inter)
+   - Data & Attributes: Technical Precision Monospace (JetBrains Mono)
+*/
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    /* Tactile Paper Elevation Tonal Canvas */
+    --bg-canvas: #FAF8F5;          /* Soft off-white cream base canvas */
+    --bg-paper: #FFFFFF;           /* Crisp, lighter ivory paper surface */
+    --bg-paper-warm: #FCFAF7;      /* Warm fiber ivory tone */
+    --bg-paper-subtle: #F6F2EA;    /* Tonal sunken tier / subtle inset */
+    --bg-sidebar: #F4EFE8;         /* Structured bookcloth parchment sidebar */
+    
+    /* Editorial Ink & Charcoal Typography */
+    --text-primary: #1C1917;       /* Rich warm obsidian espresso */
+    --text-secondary: #57534E;     /* Editorial stone gray */
+    --text-muted: #8C827A;         /* Warm bronze taupe */
+    
+    /* Metallic Bronze & Antique Gold Micro-Borders */
+    --border-bronze: #C2A674;      /* Metallic antique bronze micro-border */
+    --border-bronze-light: #DFD3BC;/* Soft champagne bronze */
+    --border-bronze-subtle: #EBE1CE;/* Gentle tonal separator */
+    --border-bronze-dark: #9A7B3E; /* Deep burnished gold */
+    
+    /* Accents */
+    --accent-gold: #B8973D;        /* Antique gold accent */
+    --accent-gold-light: rgba(184, 151, 61, 0.12);
+    --accent-gold-border: rgba(184, 151, 61, 0.3);
+    
+    /* Status Colors */
+    --status-success: #15803D;     /* Forest emerald */
+    --status-warning: #B45309;     /* Warm burnished amber */
+    --status-error: #DC2626;       /* Warm crimson */
+    
+    /* Editorial Typography Font Families */
+    --font-serif: 'Playfair Display', 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    
+    /* Physical Paper Elevation Shadows (Multi-stage diffuse ambient depth) */
+    --shadow-paper-flat: 0 1px 2px rgba(50, 40, 26, 0.04);
+    --shadow-paper-card: 0 1px 2px rgba(50, 40, 26, 0.03), 0 3px 8px rgba(50, 40, 26, 0.04), 0 8px 18px rgba(50, 40, 26, 0.02);
+    --shadow-paper-raised: 0 2px 4px rgba(50, 40, 26, 0.04), 0 6px 16px rgba(50, 40, 26, 0.05), 0 14px 28px rgba(50, 40, 26, 0.03);
+    --shadow-paper-hover: 0 4px 10px rgba(50, 40, 26, 0.06), 0 12px 28px rgba(50, 40, 26, 0.08);
+}
+
+/* Streamlit Base Overrides */
+.stApp {
+    background-color: var(--bg-canvas) !important;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+}
+
+.stAppHeader {
+    background-color: var(--bg-canvas) !important;
+}
+
+/* Streamlit Header & Chrome Controls */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+
+header[data-testid="stHeader"] {
+    background-color: transparent !important;
+}
+
+/* Ensure sidebar collapse & expand buttons are always visible & styled with gold paper elevation */
+[data-testid="stSidebarCollapsedControl"],
+[data-testid="stSidebarCollapseButton"] {
+    display: flex !important;
+    visibility: visible !important;
+    color: var(--text-primary) !important;
+    background-color: var(--bg-paper) !important;
+    border: 1px solid var(--border-bronze) !important;
+    border-radius: 6px !important;
+    padding: 4px 6px !important;
+    box-shadow: var(--shadow-paper-flat) !important;
+    z-index: 999999 !important;
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stSidebarCollapsedControl"]:hover,
+[data-testid="stSidebarCollapseButton"]:hover {
+    background-color: var(--bg-paper-warm) !important;
+    border-color: var(--border-bronze-dark) !important;
+    color: var(--accent-gold) !important;
+    box-shadow: var(--shadow-paper-card) !important;
+}
+
+/* Editorial Typography: Classic High-End Serif for Major Headers */
+h1, h2, h3, h4, .editorial-header {
+    color: var(--text-primary) !important;
+    font-family: var(--font-serif) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em !important;
+}
+
+h3 {
+    font-size: 1.55rem !important;
+    margin-bottom: 0.6rem !important;
+}
+
+p, span, div {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+}
+
+/* Tactile Paper Elevation: Metric Cards Container & Stretch */
+[data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) {
+    align-items: stretch !important;
+}
+
+[data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) > [data-testid="column"] {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+[data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) > [data-testid="column"] > div {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    height: 100% !important;
+}
+
+/* Tactile Paper Elevation: Metric Cards */
+.stMetric, [data-testid="stMetric"] {
+    background-color: var(--bg-paper) !important;
+    border: 1px solid var(--border-bronze-light) !important;
+    border-radius: 8px !important;
+    padding: 1.15rem 1.25rem !important;
+    box-shadow: var(--shadow-paper-card) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    height: 100% !important;
+    min-height: 136px !important;
+    box-sizing: border-box !important;
+    flex: 1 1 auto !important;
+}
+
+.stMetric:hover, [data-testid="stMetric"]:hover {
+    border-color: var(--border-bronze) !important;
+    box-shadow: var(--shadow-paper-hover) !important;
+    transform: translateY(-1px);
+}
+
+.stMetric [data-testid="stMetricValue"], [data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: var(--text-primary) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 1.9rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em !important;
+}
+
+.stMetric [data-testid="stMetricLabel"], [data-testid="stMetric"] [data-testid="stMetricLabel"] {
+    color: var(--text-muted) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-weight: 600 !important;
+}
+
+/* Tactile Paper Elevation: Review Cards */
+.review-card {
+    background-color: var(--bg-paper);
+    border: 1px solid var(--border-bronze-light);
+    border-left: 3.5px solid var(--border-bronze);
+    border-radius: 8px;
+    padding: 1.35rem 1.5rem;
+    margin-bottom: 1.15rem;
+    box-shadow: var(--shadow-paper-card);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.review-card:hover {
+    border-color: var(--border-bronze);
+    border-left-color: var(--border-bronze-dark);
+    background-color: var(--bg-paper-warm);
+    box-shadow: var(--shadow-paper-hover);
+    transform: translateY(-1px);
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border-bronze-subtle);
+    padding-bottom: 0.65rem;
+}
+
+/* Review Title with Editorial Serif */
+.review-card-title {
+    color: var(--text-primary) !important;
+    font-family: var(--font-serif) !important;
+    font-size: 1.15rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+    margin: 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: var(--font-mono);
+}
+
+.badge-domain {
+    background-color: rgba(184, 151, 61, 0.12);
+    color: #8C6D14;
+    border: 1px solid var(--border-bronze);
+}
+
+.badge-type {
+    background-color: rgba(87, 83, 78, 0.07);
+    color: #57534E;
+    border: 1px solid var(--border-bronze-light);
+}
+
+.review-card-reason {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    margin: 0 0 0.85rem 0;
+    line-height: 1.55;
+}
+
+.review-card-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4.5rem 2rem;
+    background-color: var(--bg-paper);
+    border: 1px dashed var(--border-bronze);
+    border-radius: 8px;
+    box-shadow: var(--shadow-paper-flat);
+    color: var(--text-muted);
+}
+
+.empty-state-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: var(--status-success);
+}
+
+/* Sidebar overrides - Bookcloth Parchment Styling */
+[data-testid="stSidebar"] {
+    background-color: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border-bronze-light) !important;
+}
+
+[data-testid="stSidebarNav"] span {
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+}
+
+[data-testid="stSidebarNav"] a[aria-current="page"] span {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Sidebar Selectbox Dropdown Navigation */
+[data-testid="stSidebar"] [data-testid="stSelectbox"] {
+    margin-bottom: 1.5rem;
+}
+
+[data-testid="stSidebar"] div[data-baseweb="select"] {
+    border-radius: 8px !important;
+}
+
+[data-testid="stSidebar"] div[data-baseweb="select"] > div {
+    background-color: var(--bg-paper) !important;
+    border: 1px solid var(--border-bronze-light) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-paper-flat) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.92rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
+
+[data-testid="stSidebar"] div[data-baseweb="select"] > div:hover {
+    border-color: var(--border-bronze) !important;
+    box-shadow: var(--shadow-paper-hover) !important;
+}
+
+[data-testid="stSidebar"] div[data-baseweb="select"] > div:focus-within {
+    border-color: var(--accent-gold) !important;
+    box-shadow: 0 0 0 2px rgba(184, 151, 61, 0.2) !important;
+}
+
+[data-testid="stSidebar"] div[data-baseweb="select"] svg {
+    color: var(--border-bronze-dark) !important;
+    fill: var(--border-bronze-dark) !important;
+}
+
+/* Selectbox Dropdown Menu Popover Options */
+div[data-baseweb="popover"] ul[role="listbox"] {
+    background-color: var(--bg-paper) !important;
+    border: 1px solid var(--border-bronze-light) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-paper-hover) !important;
+    padding: 0.35rem !important;
+}
+
+div[data-baseweb="popover"] li[role="option"] {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    padding: 0.55rem 0.85rem !important;
+    margin-bottom: 2px !important;
+    transition: all 0.15s ease !important;
+}
+
+div[data-baseweb="popover"] li[role="option"]:hover,
+div[data-baseweb="popover"] li[role="option"][aria-selected="true"] {
+    background-color: rgba(184, 151, 61, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Sidebar Bottom Footer Pinning */
+[data-testid="stSidebarUserContent"] {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: calc(100vh - 2.5rem) !important;
+    height: 100% !important;
+}
+
+[data-testid="stSidebarUserContent"] > div:first-child,
+[data-testid="stSidebarUserContent"] > [data-testid="stVerticalBlock"] {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 100% !important;
+}
+
+[data-testid="stSidebarUserContent"] .stElementContainer:has(.sidebar-footer-container),
+[data-testid="stSidebarUserContent"] > div:first-child > div:last-child {
+    margin-top: auto !important;
+}
+
+.sidebar-footer-container {
+    padding-top: 1.25rem !important;
+    padding-bottom: 0.5rem !important;
+    border-top: 1px solid var(--border-bronze-light) !important;
+    width: 100% !important;
+}
+
+/* Status Banner */
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 0.65rem 0.25rem;
+    border-bottom: 1px solid var(--border-bronze-subtle);
+    margin-bottom: 1.5rem;
+}
+
+.status-indicator {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.status-operational {
+    background-color: var(--status-success);
+    box-shadow: 0 0 8px rgba(21, 128, 61, 0.35);
+}
+
+.status-warning {
+    background-color: var(--status-warning);
+    box-shadow: 0 0 8px rgba(180, 83, 9, 0.35);
+}
