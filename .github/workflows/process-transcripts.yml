@@ -31,15 +31,17 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Create .env file
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
         run: |
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
-          echo "NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}" >> .env
-          echo "NOTION_DSA_PARENT_PAGE_ID=${{ secrets.NOTION_DSA_PARENT_PAGE_ID }}" >> .env
-          echo "NOTION_SQL_DB_ID=${{ secrets.NOTION_SQL_DB_ID }}" >> .env
-          echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env
-          echo "GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}" >> .env
-          echo "GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}" >> .env
-          echo "GOOGLE_OAUTH_REFRESH_TOKEN=${{ secrets.GOOGLE_OAUTH_REFRESH_TOKEN }}" >> .env
+          {
+            echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}"
+            echo "NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}"
+            echo "NOTION_DSA_PARENT_PAGE_ID=${{ secrets.NOTION_DSA_PARENT_PAGE_ID }}"
+            echo "NOTION_SQL_DB_ID=${{ secrets.NOTION_SQL_DB_ID }}"
+            echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}"
+            echo "GOOGLE_SERVICE_ACCOUNT_JSON=$GOOGLE_SERVICE_ACCOUNT_JSON"
+          } >> .env
 
       - name: Run Orchestration
         run: python -m src.orchestrate

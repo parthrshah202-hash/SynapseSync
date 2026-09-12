@@ -3,41 +3,30 @@ import json
 import hashlib
 from typing import Dict, List, Any
 from dotenv import load_dotenv
-from google.oauth2.credentials import Credentials
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from src.classifier import is_valid_export_filename, is_genuine_export, classify_domain
 
 def get_drive_service():
-    """Builds and returns the Google Drive API service using OAuth credentials."""
+    """Builds and returns the Google Drive API service using service account credentials."""
     load_dotenv()
-    
-    client_id = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
-    client_secret = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
-    refresh_token = os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN")
-    
-    missing = [
-        var_name
-        for var_name, val in [
-            ("GOOGLE_OAUTH_CLIENT_ID", client_id),
-            ("GOOGLE_OAUTH_CLIENT_SECRET", client_secret),
-            ("GOOGLE_OAUTH_REFRESH_TOKEN", refresh_token),
-        ]
-        if not val or val.startswith("your_")
-    ]
-    
-    if missing:
-        raise ValueError(f"Missing or placeholder environment variables: {', '.join(missing)}")
-        
-    creds = Credentials(
-        token=None,
-        refresh_token=refresh_token,
-        token_uri="https://oauth2.googleapis.com/token",
-        client_id=client_id,
-        client_secret=client_secret,
+
+    service_account_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
+
+    if not service_account_json or service_account_json.startswith("your_"):
+        raise ValueError("Missing or placeholder environment variable: GOOGLE_SERVICE_ACCOUNT_JSON")
+
+    try:
+        service_account_info = json.loads(service_account_json)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"GOOGLE_SERVICE_ACCOUNT_JSON is not valid JSON: {e}")
+
+    creds = Credentials.from_service_account_info(
+        service_account_info,
         scopes=["https://www.googleapis.com/auth/drive.readonly"],
     )
-    
+
     return build("drive", "v3", credentials=creds)
 
 def load_manifest(manifest_path: str = "manifest.json") -> Dict[str, Any]:
@@ -64,13 +53,13 @@ def fetch_new_transcripts() -> List[Dict[str, Any]]:
     service = get_drive_service()
     manifest = load_manifest()
     processed = manifest.get("processed", {})
-    
+
     # query inherently restricts to direct children of folder_id (no subfolder traversal)
     query = f"'{folder_id}' in parents and trashed = false"
-    
+
     items = []
     page_token = None
-    
+
     while True:
         results = (
             service.files()
@@ -86,40 +75,40 @@ def fetch_new_transcripts() -> List[Dict[str, Any]]:
         page_token = results.get("nextPageToken")
         if not page_token:
             break
-            
+
     new_transcripts = []
-    
+
     for item in items:
         file_id = item["id"]
         filename = item["name"]
-        
+
         # Pre-filtering based on filename pattern
         if not is_valid_export_filename(filename):
             continue
-            
+
         # Download content
         try:
             content_bytes = service.files().get_media(fileId=file_id).execute()
         except HttpError as e:
             print(f"Failed to download file {file_id}: {e}")
             continue
-            
+
         content_hash = calculate_hash(content_bytes)
-        
+
         # Check manifest
         if file_id in processed and processed[file_id].get("content_hash") == content_hash:
             continue
-            
+
         # Decode content as string
         try:
             content_str = content_bytes.decode("utf-8")
         except UnicodeDecodeError:
             continue
-            
+
         # Content verification signature
         if not is_genuine_export(content_str):
             continue
-            
+
         domain = classify_domain(content_str)
         new_transcripts.append({
             "file_id": file_id,
@@ -128,5 +117,5 @@ def fetch_new_transcripts() -> List[Dict[str, Any]]:
             "content_hash": content_hash,
             "domain": domain
         })
-            
+
     return new_transcripts

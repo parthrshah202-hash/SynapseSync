@@ -1,13 +1,14 @@
-"""Smoke test for Google Drive API connectivity via OAuth credentials.
+"""Smoke test for Google Drive API connectivity via service account credentials.
 
-Loads OAuth credentials from environment variables, builds the Drive v3 service,
-and lists files inside GOOGLE_DRIVE_FOLDER_ID.
+Loads service account credentials from environment variables, builds the Drive v3
+service, and lists files inside GOOGLE_DRIVE_FOLDER_ID.
 """
 
 import os
 import sys
+import json
 from dotenv import load_dotenv
-from google.oauth2.credentials import Credentials
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
@@ -16,17 +17,13 @@ def main():
     load_dotenv()
 
     folder_id = os.getenv("GOOGLE_DRIVE_FOLDER_ID")
-    client_id = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
-    client_secret = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
-    refresh_token = os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN")
+    service_account_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
 
     missing = [
         var_name
         for var_name, val in [
             ("GOOGLE_DRIVE_FOLDER_ID", folder_id),
-            ("GOOGLE_OAUTH_CLIENT_ID", client_id),
-            ("GOOGLE_OAUTH_CLIENT_SECRET", client_secret),
-            ("GOOGLE_OAUTH_REFRESH_TOKEN", refresh_token),
+            ("GOOGLE_SERVICE_ACCOUNT_JSON", service_account_json),
         ]
         if not val or val.startswith("your_")
     ]
@@ -38,12 +35,14 @@ def main():
 
     print("[INFO] Authenticating with Google Drive API...")
     try:
-        creds = Credentials(
-            token=None,
-            refresh_token=refresh_token,
-            token_uri="https://oauth2.googleapis.com/token",
-            client_id=client_id,
-            client_secret=client_secret,
+        try:
+            service_account_info = json.loads(service_account_json)
+        except json.JSONDecodeError as e:
+            print(f"[ERROR] GOOGLE_SERVICE_ACCOUNT_JSON is not valid JSON: {e}")
+            sys.exit(1)
+
+        creds = Credentials.from_service_account_info(
+            service_account_info,
             scopes=["https://www.googleapis.com/auth/drive.readonly"],
         )
 
