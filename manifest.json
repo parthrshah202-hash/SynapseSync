@@ -378,6 +378,198 @@
     "11EfpqDDt6_lSBLNMq2FDCDhMIRS1vRBj": {
       "status": "success",
       "content_hash": "de44c9cc8613171409d664e7b66e0625a3cc35443a0a59c9118fcb832f194c03"
+    },
+    "1d4T__a1ChYA8BY0LTN_lhT1ZRyBqLwL8": {
+      "status": "success",
+      "content_hash": "2683b065e0f94b24b9d9a9b2c2c9898d299d89a1a1803d8be3907ccee1a48ecb"
+    },
+    "1k2ZqH7tsh-A5iMPRrYH9NKGIKCdjfQOz": {
+      "status": "success",
+      "content_hash": "c15453e5bd2d14ab5792d6836ed7e60c7c57fe7f3344b322ea5148f67ec0c84e"
+    },
+    "1NXNZM8CFAwSBTplJx27_YVWbQQgy_Vdt": {
+      "status": "needs_review",
+      "content_hash": "c15453e5bd2d14ab5792d6836ed7e60c7c57fe7f3344b322ea5148f67ec0c84e",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Maximum path sum",
+            "Type": "First Solve",
+            "Date solved": "2026-09-10",
+            "Brute-Force": "- Treat every node as a potential \"peak\" of the path\n- For each node, do a fresh DFS to compute best downward sum into left and right subtrees\n- Combine as node.val + leftSum + rightSum, update global max\n- O(N) work per node \u00d7 N nodes = O(N\u00b2) time",
+            "Revision Needed": "Low",
+            "Topic": "Binary Trees",
+            "Bucket": "Subtree Computations & Ancestor Queries",
+            "Gotcha-Point": "A node can return only one-directional extension to its parent, but can still contribute both directions to the global max at itself \u2014 these are two different computations reusing the same clamped sums.",
+            "My Mistake": "Initialized global max to 0 instead of INT_MIN, causing failure on all-negative trees (path must contain at least one node, so 0 isn't a valid neutral value).",
+            "Optimal Approach": "- Single post-order DFS; each call returns \"best downward sum starting at this node\" to its parent\n- Clamp negative child sums to 0 (don't extend into a branch that hurts the sum)\n- At each node, update global max using node.val + leftSum + rightSum (allows the path to \"bend\" at this node)\n- Return node.val + max(leftSum, rightSum) to parent (path can only extend one direction upward)\n- O(N) time, O(H) space"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "3cd06e0f-9465-822e-8cf3-870f0d67623a"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Maximum path sum"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-09-10"
+                }
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Treat every node as a potential \"peak\" of the path\n- For each node, do a fresh DFS to compute best downward sum into left and right subtrees\n- Combine as node.val + leftSum + rightSum, update global max\n- O(N) work per node \u00d7 N nodes = O(N\u00b2) time"
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Low"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "Subtree Computations & Ancestor Queries"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "A node can return only one-directional extension to its parent, but can still contribute both directions to the global max at itself \u2014 these are two different computations reusing the same clamped sums."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Initialized global max to 0 instead of INT_MIN, causing failure on all-negative trees (path must contain at least one node, so 0 isn't a valid neutral value)."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Single post-order DFS; each call returns \"best downward sum starting at this node\" to its parent\n- Clamp negative child sums to 0 (don't extend into a branch that hurts the sum)\n- At each node, update global max using node.val + leftSum + rightSum (allows the path to \"bend\" at this node)\n- Return node.val + max(leftSum, rightSum) to parent (path can only extend one direction upward)\n- O(N) time, O(H) space"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Maximum path sum' already exists in database (page_id: 3d906e0f-9465-81c3-8447-f59c92e808f0)."
+        },
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Vertical Order Traversal of a Binary Tree",
+            "Type": "First Solve",
+            "Date solved": "2026-09-10",
+            "Brute-Force": "- Same as optimal in terms of traversal; no meaningfully weaker brute-force here since coordinate assignment + grouping is already necessary\n- Could technically use unsorted map + separate sort of column keys, adding unnecessary overhead",
+            "Revision Needed": "Mid",
+            "Topic": "Binary Trees",
+            "Bucket": "Path Finding & Tree Views",
+            "Gotcha-Point": "Sorting pair<int,int> directly sorts by first element then second automatically \u2014 no custom comparator needed since the tie-break rule (row then value) matches lexicographic order exactly.",
+            "My Mistake": "Multiple syntax/logic bugs on first pass \u2014 missing null base case, used map::insert (no-op on existing key) instead of operator[]+push_back for appending, and initially tried to push vector<pair<int,int>> directly into vector<int> result without extracting values or using a reference binding in the range-for loop.",
+            "Optimal Approach": "- DFS from root, tracking (row, col): left child is (row+1, col-1), right child is (row+1, col+1)\n- Group nodes as map<col, vector<pair<row, value>>> \u2014 map keeps columns sorted automatically\n- For each column, sort its vector directly on (row, value) pairs \u2014 lexicographic sort handles row-then-value tie-break for free\n- Extract just the values (in sorted order) into a vector<int> per column, assemble into final vector<vector<int>>\n- O(N log N) time, O(N) space"
+          },
+          "segment_index": 2,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "3cd06e0f-9465-822e-8cf3-870f0d67623a"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Vertical Order Traversal of a Binary Tree"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-09-10"
+                }
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Same as optimal in terms of traversal; no meaningfully weaker brute-force here since coordinate assignment + grouping is already necessary\n- Could technically use unsorted map + separate sort of column keys, adding unnecessary overhead"
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "Path Finding & Tree Views"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Sorting pair<int,int> directly sorts by first element then second automatically \u2014 no custom comparator needed since the tie-break rule (row then value) matches lexicographic order exactly."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Multiple syntax/logic bugs on first pass \u2014 missing null base case, used map::insert (no-op on existing key) instead of operator[]+push_back for appending, and initially tried to push vector<pair<int,int>> directly into vector<int> result without extracting values or using a reference binding in the range-for loop."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- DFS from root, tracking (row, col): left child is (row+1, col-1), right child is (row+1, col+1)\n- Group nodes as map<col, vector<pair<row, value>>> \u2014 map keeps columns sorted automatically\n- For each column, sort its vector directly on (row, value) pairs \u2014 lexicographic sort handles row-then-value tie-break for free\n- Extract just the values (in sorted order) into a vector<int> per column, assemble into final vector<vector<int>>\n- O(N log N) time, O(N) space"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Vertical Order Traversal of a Binary Tree' already exists in database (page_id: 3d906e0f-9465-81fe-8266-e409be0d2c40)."
+        }
+      ]
     }
   }
 }
