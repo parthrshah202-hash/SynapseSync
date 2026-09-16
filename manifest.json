@@ -578,6 +578,109 @@
     "1an3a41EEXvHmcsMK6cos5B4t6aEemJEG": {
       "status": "success",
       "content_hash": "941864ee92bed8a9ad29fab97a6a437528662defffc96933b0da140a46b2c206"
+    },
+    "1fCO-u39g4b3O4Z2NksbenRZqvMTem_KO": {
+      "status": "success",
+      "content_hash": "664fcc5610b23e6fba58484fda345033dd50b890b8c762a4c4b0f7c4b5107744"
+    },
+    "10I96nUbOwRz0sNxYwQ0g-5RSYbZZGsTo": {
+      "status": "success",
+      "content_hash": "daa4b544c667e4e4c12d0a953a32117640c6732ca3c92e088a9a1fe0a9d90a6d"
+    },
+    "1n4DT_pj1K187ncBgE904ZA-UII8FdRYE": {
+      "status": "needs_review",
+      "content_hash": "687cfe7d76ee153b0dfefd71f6ff41b0b69b1cb8df57fc9d0b2abcf135ef505b",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Requirements needed to construct a unique BT",
+            "Type": "First Solve",
+            "Date solved": "2026-09-14",
+            "Gotcha-Point": "Uniqueness fails specifically when a node has only one child \u2014 Preorder and Postorder become identical for left-child-only vs right-child-only cases, while Inorder distinguishes them by capturing relative position.",
+            "Topic": "Binary Trees",
+            "Optimal Approach": "- Recognize Inorder is the only traversal that captures left/right positional info relative to a root.\n- Preorder or Postorder gives the root; Inorder is needed to split into left/right subtrees.\n- (Pre, Post) fails because single-child cases produce identical Pre/Post sequences for different tree shapes.\n- (X, X) fails because repeating the same traversal adds no new information.\n- Rule: return true iff exactly one of the two traversal types is Inorder (2) and the other is Pre/Post (1 or 3); false if both same, or if the pair is (Pre, Post).\n- O(1) time, O(1) space.",
+            "Brute-Force": "- No real \"brute-force\" here \u2014 this is a conceptual/lookup problem, not a search-space problem.\n- The only naive approach would be to try reconstructing trees for both interpretations and check if they always match, which isn't practical to code directly.",
+            "Revision Needed": "High",
+            "My Mistake": "Initially assumed Inorder alone was sufficient (defaulted to \"middle element = root\" without justification); needed a concrete counterexample (root=1, right-skewed) to see the ambiguity.",
+            "Bucket": "6. Tree Construction, Modification & Serialization"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "3cd06e0f-9465-822e-8cf3-870f0d67623a"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Requirements needed to construct a unique BT"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-09-14"
+                }
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Uniqueness fails specifically when a node has only one child \u2014 Preorder and Postorder become identical for left-child-only vs right-child-only cases, while Inorder distinguishes them by capturing relative position."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Recognize Inorder is the only traversal that captures left/right positional info relative to a root.\n- Preorder or Postorder gives the root; Inorder is needed to split into left/right subtrees.\n- (Pre, Post) fails because single-child cases produce identical Pre/Post sequences for different tree shapes.\n- (X, X) fails because repeating the same traversal adds no new information.\n- Rule: return true iff exactly one of the two traversal types is Inorder (2) and the other is Pre/Post (1 or 3); false if both same, or if the pair is (Pre, Post).\n- O(1) time, O(1) space."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- No real \"brute-force\" here \u2014 this is a conceptual/lookup problem, not a search-space problem.\n- The only naive approach would be to try reconstructing trees for both interpretations and check if they always match, which isn't practical to code directly."
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "High"
+                }
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Initially assumed Inorder alone was sufficient (defaulted to \"middle element = root\" without justification); needed a concrete counterexample (root=1, right-skewed) to see the ambiguity."
+                    }
+                  }
+                ]
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "6. Tree Construction - Modification & Serialization"
+                  }
+                ]
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Requirements needed to construct a unique BT' already exists in database (page_id: 3dc06e0f-9465-8022-a9dc-eaa3cf356958)."
+        }
+      ]
     }
   }
 }
