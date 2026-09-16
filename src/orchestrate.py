@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import logging
 from typing import Dict, Any
@@ -93,6 +94,15 @@ def run_orchestration(dry_run: bool = False, manifest_path: str = "manifest.json
                 
         except Exception as e:
             logger.error(f"Transient error processing {filename}: {e}", exc_info=True)
+            # Record the failure so it's visible in the manifest/dashboard instead of
+            # vanishing silently. NOTE: this file is deliberately NOT marked with the
+            # current content_hash, so if the underlying bug gets fixed, the next run
+            # will still pick this file up and retry it automatically.
+            processed[file_id] = {
+                "status": "error",
+                "filename": filename,
+                "error": str(e),
+            }
             stats["failed"] += 1
             continue
             
@@ -109,6 +119,10 @@ def run_orchestration(dry_run: bool = False, manifest_path: str = "manifest.json
     logger.info(f"Failed: {stats['failed']}")
     logger.info(f"Skipped (unclassified/unchanged): {stats['skipped']}")
     logger.info("===================")
+
+    if stats["failed"] > 0:
+        logger.error(f"{stats['failed']} file(s) failed to process — failing the run so this is visible.")
+        sys.exit(1)
 
 if __name__ == "__main__":
     run_orchestration(dry_run=False)

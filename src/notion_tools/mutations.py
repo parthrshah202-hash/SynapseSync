@@ -57,6 +57,17 @@ def validate_strict_field(schema: Dict[str, Any], prop_name: str, value: str):
         )
 
 
+def sanitize_multi_select_name(value: str) -> str:
+    """
+    Notion's API rejects multi_select option names containing commas
+    (it can't distinguish "one option with a comma in its name" from
+    "multiple comma-separated options"). Since this pipeline always
+    passes a single conceptual tag per field, replace commas with a
+    safe separator instead of splitting into multiple options.
+    """
+    return value.replace(",", " -")
+
+
 REVISION_ALLOWED_PROPERTIES = {"Revision Date", "2nd Revision Needed", "Notes"}
 
 
@@ -107,7 +118,8 @@ def build_properties_payload(
         elif prop_type == "status":
             properties[mapped_key] = {"status": {"name": str(value)}}
         elif prop_type == "multi_select":
-            properties[mapped_key] = {"multi_select": [{"name": str(value)}]}
+            safe_name = sanitize_multi_select_name(str(value))
+            properties[mapped_key] = {"multi_select": [{"name": safe_name}]}
         else:
             raise ValueError(f"Unsupported property type '{prop_type}' for field '{mapped_key}'.")
             
