@@ -27,12 +27,17 @@ KNOWN_DSA_TOPICS: Set[str] = {
     "Sorting",
     "Recursion",
     "Arrays",
+    "Strings",
     "Bit Manipulation",
     "Sliding Window and Two Pointer",
     "Greedy Algorithm",
     "Stack & Queue",
     "Heaps",
     "Binary Trees",
+    "Binary Search Trees",
+    "Graphs",
+    "Dynamic Programming",
+    "Tries",
 }
 
 # Contract Schemas (Strict required keys)
@@ -111,8 +116,17 @@ def normalize_dsa_topic(value: Any) -> str:
         "heap": "Heaps",
         "binary trees": "Binary Trees",
         "binary tree": "Binary Trees",
+        "binary search trees": "Binary Search Trees",
+        "search trees": "Binary Search Trees",
         "tree": "Binary Trees",
         "trees": "Binary Trees",
+        "dynamic programming": "Dynamic Programming",
+        "dynamic programming": "Dynamic Programming",
+        "strings": "Strings",
+        "tries": "Tries",
+        "graphs": "Graphs",
+        "graph": "Graphs",
+        "DP": "Dynamic Programming",
     }
 
     if val_lower in topic_map:
