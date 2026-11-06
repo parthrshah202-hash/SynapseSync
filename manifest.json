@@ -789,6 +789,774 @@
     "1bYGcnSwnKhyVg_HFV-1z4Bqc-2JTZPnG": {
       "status": "success",
       "content_hash": "1c62173aa61c1608c8c0c469f0ec4ec2a118eee148114f26aad0838134213c43"
+    },
+    "1q65hXMDndghZRCQ3y8gJpkmnymB4LPCl": {
+      "status": "success",
+      "content_hash": "97a4ef0aced51ba33017cdca65d96c398d40152fe5904c679415abd94a11e230"
+    },
+    "1-upWumq5HNpsg0Hco5rIbLyp2_f-npdM": {
+      "status": "needs_review",
+      "content_hash": "2262f3875d211faf2be44fb090d4aba6f2b61c19424caf8ed879ec45b6e7187e",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Shortest Path in Binary Matrix",
+            "Type": "First Solve",
+            "Date solved": "2026-11-01",
+            "Bucket": "5. Shortest Path",
+            "Gotcha-Point": "Diagonal moves still cost 1, so BFS stays valid. Path length counts cells, so the source starts at 1, and a 1x1 grid of 0 returns 1, so there's no early return 0 for source equals destination.",
+            "Optimal Approach": "- If the start or end cell is 1, return -1 immediately\n- Use `dist[n][n]` initialised to -1, which doubles as the visited marker\n- Set `dist[0][0] = 1` (length counts cells, not moves) and push the source\n- Pop a cell, loop over 8 directions with `delrow`/`delcol`, and push if in bounds, `dist == -1` and `grid == 0`\n- Set `dist[nr][nc] = dist[cur] + 1` at push time, and stop when the destination is popped\n- Return `dist[n-1][n-1]`, which is -1 if unreachable. O(N\u00b2) time, O(N\u00b2) space",
+            "My Mistake": "None",
+            "Brute-Force": "- DFS from (0,0), trying all 8 directions and backtracking\n- Track the minimum path length found at the destination\n- Exponential time, as it explores all simple paths\n- It re-explores the same cells many times",
+            "Revision Needed": "Low",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Shortest Path in Binary Matrix"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-11-01"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "5. Shortest Path"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Diagonal moves still cost 1, so BFS stays valid. Path length counts cells, so the source starts at 1, and a 1x1 grid of 0 returns 1, so there's no early return 0 for source equals destination."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- If the start or end cell is 1, return -1 immediately\n- Use `dist[n][n]` initialised to -1, which doubles as the visited marker\n- Set `dist[0][0] = 1` (length counts cells, not moves) and push the source\n- Pop a cell, loop over 8 directions with `delrow`/`delcol`, and push if in bounds, `dist == -1` and `grid == 0`\n- Set `dist[nr][nc] = dist[cur] + 1` at push time, and stop when the destination is popped\n- Return `dist[n-1][n-1]`, which is -1 if unreachable. O(N\u00b2) time, O(N\u00b2) space"
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "None"
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- DFS from (0,0), trying all 8 directions and backtracking\n- Track the minimum path length found at the destination\n- Exponential time, as it explores all simple paths\n- It re-explores the same cells many times"
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Low"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Shortest Path in Binary Matrix' already exists in database (page_id: 40b06e0f-9465-80cc-b6b6-dfd9a4f910a2)."
+        }
+      ]
+    },
+    "140Zk9KZ09U2TbIVUU6LSYVSw7TPhONR5": {
+      "status": "needs_review",
+      "content_hash": "f645e49fb5cca73a9b55774b0ffe657bd5e86cb84569f7e665d64035cd93faac",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Path With Minimum Effort",
+            "Type": "First Solve",
+            "Date solved": "2026-11-01",
+            "Bucket": "5. Shortest Path",
+            "Gotcha-Point": "The path cost is the max edge, not the sum, so the relaxation becomes `max(dist[u], w)` instead of `dist[u] + w`. Dijkstra's greedy still holds because extending a path never lowers a max.",
+            "Optimal Approach": "- Treat each cell as a node, with 4-directional edges of weight |h[u] - h[v]|.\n- Run Dijkstra with a min-heap keyed on effort, where `dist[r][c]` is the minimum possible max-edge to reach (r,c).\n- Relaxation: `newEffort = max(dist[u], |h[v] - h[u]|)`. Update and push if `newEffort < dist[v]`.\n- Skip stale heap entries, and return as soon as the destination is popped.\n- O(N\u00b7M\u00b7log(N\u00b7M)) time, O(N\u00b7M) space.",
+            "My Mistake": "Initially planned sum-Dijkstra with a separate `maxval` variable, which is wrong because the min-sum path is not necessarily the min-max path. Also missed the bounds check on neighbors and the early exit at the destination.",
+            "Brute-Force": "- Enumerate every path from (0,0) to (n-1,m-1) with DFS/backtracking.\n- Track the max absolute difference along each path and keep the minimum over all paths.\n- Exponential time, since the number of paths in a grid blows up.",
+            "Revision Needed": "Mid",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Path With Minimum Effort"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-11-01"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "5. Shortest Path"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "The path cost is the max edge, not the sum, so the relaxation becomes `max(dist[u], w)` instead of `dist[u] + w`. Dijkstra's greedy still holds because extending a path never lowers a max."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Treat each cell as a node, with 4-directional edges of weight |h[u] - h[v]|.\n- Run Dijkstra with a min-heap keyed on effort, where `dist[r][c]` is the minimum possible max-edge to reach (r,c).\n- Relaxation: `newEffort = max(dist[u], |h[v] - h[u]|)`. Update and push if `newEffort < dist[v]`.\n- Skip stale heap entries, and return as soon as the destination is popped.\n- O(N\u00b7M\u00b7log(N\u00b7M)) time, O(N\u00b7M) space."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Initially planned sum-Dijkstra with a separate `maxval` variable, which is wrong because the min-sum path is not necessarily the min-max path. Also missed the bounds check on neighbors and the early exit at the destination."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Enumerate every path from (0,0) to (n-1,m-1) with DFS/backtracking.\n- Track the max absolute difference along each path and keep the minimum over all paths.\n- Exponential time, since the number of paths in a grid blows up."
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Path With Minimum Effort' already exists in database (page_id: 40b06e0f-9465-80ad-aa23-c78d7ee0400c)."
+        }
+      ]
+    },
+    "1XwdgdyzOp_qE9p8QimQ_6zTsHk4bMISS": {
+      "status": "needs_review",
+      "content_hash": "12b13f8fafdcbd05aa86ef75a66857977ff089c55a6d795f1d94757b3b6cc165",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Print Shortest Path",
+            "Type": "First Solve",
+            "Date solved": "2026-10-31",
+            "Bucket": "5. Shortest Path",
+            "Gotcha-Point": "`parent[]` is a per-node table of \"who I came from\", not a path. The route only appears when you hop along it from n back to the source, and the result list (not `parent[]`) is what you reverse.",
+            "Optimal Approach": "- Run Dijkstra with a min-heap from node 1, with `dist[]` initialised to INF and `parent[]` initialised to 0.\n- On every strict improvement `dist[v] > dist[u] + w`, set `parent[v] = u` and push to the heap.\n- If `dist[n]` is still INF, return `{-1}`.\n- Else walk from n via `parent[]` until 0, `push_back` each node, then `push_back(dist[n])`, and reverse once.\n- Optional early exit: break when n is first popped from the heap.\n- O((V+E) log V) time, O(V+E) space",
+            "My Mistake": "Used a single vector (then a map) to store the path instead of a per-node parent array; sized arrays `n` instead of `n+1` for 1-indexed nodes; scanned `parent[]` from the end instead of hopping along the links.",
+            "Brute-Force": "- Enumerate every path from 1 to n using DFS/backtracking and track the minimum weight path.\n- Keep a visited set per path and compare the total weight at every arrival at n.\n- Exponential time, since the number of simple paths can blow up.",
+            "Revision Needed": "High",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Print Shortest Path"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-10-31"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "5. Shortest Path"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "`parent[]` is a per-node table of \"who I came from\", not a path. The route only appears when you hop along it from n back to the source, and the result list (not `parent[]`) is what you reverse."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Run Dijkstra with a min-heap from node 1, with `dist[]` initialised to INF and `parent[]` initialised to 0.\n- On every strict improvement `dist[v] > dist[u] + w`, set `parent[v] = u` and push to the heap.\n- If `dist[n]` is still INF, return `{-1}`.\n- Else walk from n via `parent[]` until 0, `push_back` each node, then `push_back(dist[n])`, and reverse once.\n- Optional early exit: break when n is first popped from the heap.\n- O((V+E) log V) time, O(V+E) space"
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Used a single vector (then a map) to store the path instead of a per-node parent array; sized arrays `n` instead of `n+1` for 1-indexed nodes; scanned `parent[]` from the end instead of hopping along the links."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Enumerate every path from 1 to n using DFS/backtracking and track the minimum weight path.\n- Keep a visited set per path and compare the total weight at every arrival at n.\n- Exponential time, since the number of simple paths can blow up."
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "High"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Print Shortest Path' already exists in database (page_id: 40a06e0f-9465-80bb-96d8-c3e3a0775955)."
+        }
+      ]
+    },
+    "1dfKle5nTzL77vxeKgSNzW5QcLSpYhLti": {
+      "status": "needs_review",
+      "content_hash": "698997037d1fcda191e536dc7bc3e1cc035af923bc746b1cd41c0646861553cf",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Dijkstra's Algorithm",
+            "Type": "First Solve",
+            "Date solved": "2026-10-31",
+            "Bucket": "5. Shortest Path",
+            "Gotcha-Point": "A popped node's distance is final because every other route goes through a heap node with distance >= current, and non-negative weights can't make it shorter. Negative weights break this. Also, skip stale PQ entries (distance > dist[node]) to avoid reprocessing adjacency lists.",
+            "Optimal Approach": "- Build the adjacency list (both directions for undirected), dist[] = 1e9, dist[S] = 0\n- Min-heap of {distance, node}. Pop the smallest tentative distance, which is final\n- Skip the entry if distance > dist[node] (stale entry)\n- Relax each neighbour: if dist[node] + w < dist[nbr], update and push\n- Return dist[]\n- O((V+E) log V) \u2248 O(E log V) time, O(V+E) space",
+            "My Mistake": "Missed the stale-entry check in the first version, and mislabeled the PQ pair in a comment ({weight, distance} instead of {distance, node}). Also needed a nudge to articulate why the smallest-distance node is final.",
+            "Brute-Force": "- Bellman-Ford style: relax every edge V-1 times, O(V\u00b7E)\n- Or BFS with a plain queue, re-pushing a node whenever a shorter distance is found. This can blow up exponentially on weighted graphs\n- Both ignore the order in which nodes are finalized, so they redo a lot of work",
+            "Revision Needed": "Mid",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Dijkstra's Algorithm"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-10-31"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "5. Shortest Path"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "A popped node's distance is final because every other route goes through a heap node with distance >= current, and non-negative weights can't make it shorter. Negative weights break this. Also, skip stale PQ entries (distance > dist[node]) to avoid reprocessing adjacency lists."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Build the adjacency list (both directions for undirected), dist[] = 1e9, dist[S] = 0\n- Min-heap of {distance, node}. Pop the smallest tentative distance, which is final\n- Skip the entry if distance > dist[node] (stale entry)\n- Relax each neighbour: if dist[node] + w < dist[nbr], update and push\n- Return dist[]\n- O((V+E) log V) \u2248 O(E log V) time, O(V+E) space"
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Missed the stale-entry check in the first version, and mislabeled the PQ pair in a comment ({weight, distance} instead of {distance, node}). Also needed a nudge to articulate why the smallest-distance node is final."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Bellman-Ford style: relax every edge V-1 times, O(V\u00b7E)\n- Or BFS with a plain queue, re-pushing a node whenever a shorter distance is found. This can blow up exponentially on weighted graphs\n- Both ignore the order in which nodes are finalized, so they redo a lot of work"
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Dijkstra's Algorithm' already exists in database (page_id: 40a06e0f-9465-8084-9ae2-f672567e03e3)."
+        }
+      ]
+    },
+    "1TutfZl4fOt1g4qUfgMQFDXUj69xb86X8": {
+      "status": "needs_review",
+      "content_hash": "4aa37cafdc63add3a89dea86723e6c25b1e309b0ad374f23f97200f07de7c65f",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Shortest Path in DAG",
+            "Type": "First Solve",
+            "Date solved": "2026-10-30",
+            "Bucket": "5. Shortest Path",
+            "Gotcha-Point": "Topo order guarantees finality of a node's distance (all predecessors processed first), so no priority queue is needed. Seed all indegree-0 nodes and guard the relax step on the popped node u (not the neighbour v), while Kahn's bookkeeping stays unconditional.",
+            "Optimal Approach": "- Build the adjacency list as {neighbour, weight} and the indegree array in one pass over edges\n- Initialise dist to -1 for all nodes and dist[0] = 0\n- Seed the queue with ALL indegree-0 nodes (not just 0), so every node eventually reaches indegree 0 and gets popped\n- Pop u. For each {v, w}: always do indegree[v]-- and push at 0. Relax dist[v] only if dist[u] != -1 (v == -1 \u2192 assign, else take min)\n- Topological order guarantees all predecessors are processed before v, so dist[v] is final when popped\n- O(V+E) time, O(V+E) space",
+            "My Mistake": "First thought BFS with added weights would work. Initially guarded the relax step on the neighbour instead of the popped node, and missed the second relax case (already reached but via a longer path). First draft also had compile errors (used the pair as an index, undeclared V).",
+            "Brute-Force": "- Plain BFS with weights finalizes a node on first discovery, which is wrong (e.g. 0\u21921 w=10 gives 10, true answer is 2 via 0\u21922\u21921)\n- Fix by re-pushing a node into the queue whenever a shorter distance is found\n- A node can then be improved and reprocessed many times, so the complexity degrades beyond O(V+E)",
+            "Revision Needed": "Mid",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Shortest Path in DAG"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-10-30"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "5. Shortest Path"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Topo order guarantees finality of a node's distance (all predecessors processed first), so no priority queue is needed. Seed all indegree-0 nodes and guard the relax step on the popped node u (not the neighbour v), while Kahn's bookkeeping stays unconditional."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Build the adjacency list as {neighbour, weight} and the indegree array in one pass over edges\n- Initialise dist to -1 for all nodes and dist[0] = 0\n- Seed the queue with ALL indegree-0 nodes (not just 0), so every node eventually reaches indegree 0 and gets popped\n- Pop u. For each {v, w}: always do indegree[v]-- and push at 0. Relax dist[v] only if dist[u] != -1 (v == -1 \u2192 assign, else take min)\n- Topological order guarantees all predecessors are processed before v, so dist[v] is final when popped\n- O(V+E) time, O(V+E) space"
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "First thought BFS with added weights would work. Initially guarded the relax step on the neighbour instead of the popped node, and missed the second relax case (already reached but via a longer path). First draft also had compile errors (used the pair as an index, undeclared V)."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Plain BFS with weights finalizes a node on first discovery, which is wrong (e.g. 0\u21921 w=10 gives 10, true answer is 2 via 0\u21922\u21921)\n- Fix by re-pushing a node into the queue whenever a shorter distance is found\n- A node can then be improved and reprocessed many times, so the complexity degrades beyond O(V+E)"
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Shortest Path in DAG' already exists in database (page_id: 40a06e0f-9465-8068-9d60-f30626c21a31)."
+        }
+      ]
+    },
+    "1mg6AntCUQW9XRJ1CWaAJZLSRezESQX9L": {
+      "status": "needs_review",
+      "content_hash": "5865d7bd9b7c9e7bc08d32feae15741783d8a23d60818e6db30d3fbe9f9838d0",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Shortest Path in Undirected Graph with Unit Weights",
+            "Type": "First Solve",
+            "Date solved": "2026-10-30",
+            "Bucket": "5. Shortest Path",
+            "Gotcha-Point": "BFS on a unit-weight graph already gives the shortest path: the first time a node is reached is the shortest, so dist[] doubles as the visited array and no path enumeration is needed.",
+            "Optimal Approach": "- Build the adjacency list from the edge list, pushing both u\u2192v and v\u2192u since the graph is undirected.\n- Initialise dist[] to -1 for all nodes (-1 means unvisited/unreachable), set dist[0] = 0 and push 0 into the queue.\n- Pop a node u and, for each neighbour v with dist[v] == -1, set dist[v] = dist[u] + 1 and push v.\n- BFS processes nodes in increasing distance order, so the first visit to a node is its shortest distance.\n- Nodes never reached stay at -1, so no extra handling is needed.\n- O(N + M) time, O(N + M) space",
+            "My Mistake": "Initially proposed backtracking over all paths, and suggested a pop-counter for the distance instead of dist[u] + 1. In the code, pushed adj vectors instead of node ids, inverted the visited check (!= -1), and added a redundant outer for loop.",
+            "Brute-Force": "- Enumerate all possible paths from the source to every node using backtracking/DFS.\n- Record the length of each path and keep the minimum per node.\n- Exponential time, since the same nodes are re-explored along many different paths.",
+            "Revision Needed": "Mid",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Shortest Path in Undirected Graph with Unit Weights"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-10-30"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "5. Shortest Path"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "BFS on a unit-weight graph already gives the shortest path: the first time a node is reached is the shortest, so dist[] doubles as the visited array and no path enumeration is needed."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Build the adjacency list from the edge list, pushing both u\u2192v and v\u2192u since the graph is undirected.\n- Initialise dist[] to -1 for all nodes (-1 means unvisited/unreachable), set dist[0] = 0 and push 0 into the queue.\n- Pop a node u and, for each neighbour v with dist[v] == -1, set dist[v] = dist[u] + 1 and push v.\n- BFS processes nodes in increasing distance order, so the first visit to a node is its shortest distance.\n- Nodes never reached stay at -1, so no extra handling is needed.\n- O(N + M) time, O(N + M) space"
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Initially proposed backtracking over all paths, and suggested a pop-counter for the distance instead of dist[u] + 1. In the code, pushed adj vectors instead of node ids, inverted the visited check (!= -1), and added a redundant outer for loop."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Enumerate all possible paths from the source to every node using backtracking/DFS.\n- Record the length of each path and keep the minimum per node.\n- Exponential time, since the same nodes are re-explored along many different paths."
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Shortest Path in Undirected Graph with Unit Weights' already exists in database (page_id: 40a06e0f-9465-803f-9f69-e2bb87b14b6a)."
+        }
+      ]
+    },
+    "1l_zXYKHlXNRlZ7jias0j2GizUO0szuaf": {
+      "status": "needs_review",
+      "content_hash": "bb5184d6871dbd87795d4510687c6338e6b74fc4ec90f45b468460482c21316a",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Alien Dictionary",
+            "Type": "First Solve",
+            "Date solved": "2026-10-29",
+            "Bucket": "4. Topological Sort",
+            "Gotcha-Point": "The key is building the graph correctly. Compare adjacent words only and add an edge only at the first mismatch. A longer word before its own prefix is invalid even without a cycle, and a cycle is detected when Kahn's output size is less than K.",
+            "Optimal Approach": "- Characters are nodes, and each \"a comes before b\" constraint is a directed edge.\n- Compare only adjacent word pairs, since sortedness is transitive. The first differing character gives the edge s1[j] \u2192 s2[j]. Then break.\n- If no mismatch is found and the first word is longer than the second (e.g. \"abcd\" before \"abc\"), the input is invalid, so return \"\".\n- Run Kahn's algorithm (BFS topological sort) on all K nodes.\n- If the topo order has fewer than K nodes, there is a cycle, so return \"\". Otherwise map the order back to characters.\n- O(N\u00b7L + K) time, O(K + N) space.",
+            "My Mistake": "Peeked at the solution for the graph-building idea. The first version missed the prefix-invalid case and the cycle check (topo.size() < K), and I initially read the prefix case as \"can't determine\" instead of \"invalid\".",
+            "Brute-Force": "- Treat the input as K characters and try every permutation (K!) as a candidate alphabet.\n- For each permutation, check that all adjacent words are sorted under it.\n- Return the first valid permutation, or \"\" if none works.\n- Far too slow, since K! blows up even for K around 10.",
+            "Revision Needed": "Mid",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Alien Dictionary"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-10-29"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "4. Topological Sort"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "The key is building the graph correctly. Compare adjacent words only and add an edge only at the first mismatch. A longer word before its own prefix is invalid even without a cycle, and a cycle is detected when Kahn's output size is less than K."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Characters are nodes, and each \"a comes before b\" constraint is a directed edge.\n- Compare only adjacent word pairs, since sortedness is transitive. The first differing character gives the edge s1[j] \u2192 s2[j]. Then break.\n- If no mismatch is found and the first word is longer than the second (e.g. \"abcd\" before \"abc\"), the input is invalid, so return \"\".\n- Run Kahn's algorithm (BFS topological sort) on all K nodes.\n- If the topo order has fewer than K nodes, there is a cycle, so return \"\". Otherwise map the order back to characters.\n- O(N\u00b7L + K) time, O(K + N) space."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Peeked at the solution for the graph-building idea. The first version missed the prefix-invalid case and the cycle check (topo.size() < K), and I initially read the prefix case as \"can't determine\" instead of \"invalid\"."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Treat the input as K characters and try every permutation (K!) as a candidate alphabet.\n- For each permutation, check that all adjacent words are sorted under it.\n- Return the first valid permutation, or \"\" if none works.\n- Far too slow, since K! blows up even for K around 10."
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Alien Dictionary' already exists in database (page_id: 40806e0f-9465-801f-bdc4-e559bd430824)."
+        }
+      ]
+    },
+    "1e67W92lRAqt9N-gtseckMn50mkeVEPSv": {
+      "status": "needs_review",
+      "content_hash": "561bc057b71334dec9033a8bd7f0523f7457194dab7fec1c3e225ccff7c64183",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Eventual Safe States",
+            "Type": "First Solve",
+            "Date solved": "2026-10-29",
+            "Bucket": "4. Topological Sort",
+            "Gotcha-Point": "Don't clear `pathVisited` on unsafe nodes. Leaving them marked turns `pathVisited` into a permanent \"unsafe\" marker, so later DFS calls reaching them get the right answer and no separate result array is needed. Unmark only on the safe exit.",
+            "Optimal Approach": "- Use `visited` and `pathVisited` arrays. Run DFS from every unvisited node.\n- A node is unsafe if it is on a cycle or can reach one. A terminal node is safe by default.\n- In DFS, if a neighbour is unvisited, recurse. If it returns false, return false and leave this node marked in `pathVisited`.\n- If a neighbour is visited and still marked in `pathVisited`, return false (cycle, or leads to an unsafe node).\n- If all neighbours are safe, unmark the node in `pathVisited` and return true.\n- Collect all nodes with `pathVisited == 0` in one pass for ascending order. O(V+E) time, O(V) space.",
+            "My Mistake": "First thought a node is unsafe only if it lies on a cycle, instead of also when it can reach a cycle. Initially planned to mark all nodes safe by default and flip them on cycle detection, which misses nodes that lead into the cycle. Said the recursion stack space is O(V+E) when it is O(V).",
+            "Brute-Force": "- For every node, explore all paths from it (DFS/BFS) and check whether any path reaches a cycle or never ends at a terminal node.\n- Mark the node safe only if every path ends at a terminal node.\n- No memory between runs, so shared sub-paths are re-explored for each starting node.\n- O(V\u00b7(V+E)) time in the worst case.",
+            "Revision Needed": "Mid",
+            "Topic": "Graphs"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Eventual Safe States"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-10-29"
+                }
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "4. Topological Sort"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Don't clear `pathVisited` on unsafe nodes. Leaving them marked turns `pathVisited` into a permanent \"unsafe\" marker, so later DFS calls reaching them get the right answer and no separate result array is needed. Unmark only on the safe exit."
+                    }
+                  }
+                ]
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Use `visited` and `pathVisited` arrays. Run DFS from every unvisited node.\n- A node is unsafe if it is on a cycle or can reach one. A terminal node is safe by default.\n- In DFS, if a neighbour is unvisited, recurse. If it returns false, return false and leave this node marked in `pathVisited`.\n- If a neighbour is visited and still marked in `pathVisited`, return false (cycle, or leads to an unsafe node).\n- If all neighbours are safe, unmark the node in `pathVisited` and return true.\n- Collect all nodes with `pathVisited == 0` in one pass for ascending order. O(V+E) time, O(V) space."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "First thought a node is unsafe only if it lies on a cycle, instead of also when it can reach a cycle. Initially planned to mark all nodes safe by default and flip them on cycle detection, which misses nodes that lead into the cycle. Said the recursion stack space is O(V+E) when it is O(V)."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- For every node, explore all paths from it (DFS/BFS) and check whether any path reaches a cycle or never ends at a terminal node.\n- Mark the node safe only if every path ends at a terminal node.\n- No memory between runs, so shared sub-paths are re-explored for each starting node.\n- O(V\u00b7(V+E)) time in the worst case."
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Eventual Safe States' already exists in database (page_id: 40806e0f-9465-80da-8b2f-f223b249826b)."
+        }
+      ]
+    },
+    "1VXKlfwWlmo8UMq63So9wMW-FSC19rUFU": {
+      "status": "skipped_unclassified",
+      "content_hash": "3f050bba0344d0eb78314136d2e13fc45376144e511761a55fc0d26822430234"
     }
   }
 }
