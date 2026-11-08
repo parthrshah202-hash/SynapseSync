@@ -1569,6 +1569,200 @@
     "1g0CJeb_dlMXB9ceqTip88f6JFhm5MpNX": {
       "status": "success",
       "content_hash": "43d5ce6d70075918d16cd15bd208043814c93d96ab20325693fce5c629efcab6"
+    },
+    "125K5GK-YPFPlmpWQQRu0c8Lq3-pv8E5-": {
+      "status": "needs_review",
+      "content_hash": "7b4a2c3c229c493d6d5f6fbcf8e923b863b4aac7b34ec4864f2c5607c48c4087",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Find the MST Weight (Kruskal) \u2014 Follow-up (MST Edges)",
+            "Type": "First Solve",
+            "Date solved": "2026-11-08",
+            "Revision Needed": "Low",
+            "Optimal Approach": "- Flatten the adjacency list into edges (weight, u, v), keeping only `node < neighbour` to dedupe.\n- Sort edges by weight ascending.\n- Build a DSU over V vertices.\n- For each edge, if the ultimate parents differ, record the edge in the MST and union by size.\n- Break once the MST holds V-1 edges.\n- O(E log E) time, O(E + V) space.",
+            "Bucket": "6. DSU & MST",
+            "My Mistake": "None on the logic. Needed a hint to find the `node < neighbour` dedupe condition.",
+            "Topic": "Graphs",
+            "Brute-Force": "- Enumerate every subset of V-1 edges, keep those that are connected and acyclic, and pick the minimum total weight.\n- This is exponential, roughly C(E, V-1) subsets.\n- Prim's with a priority queue is an alternative that builds the tree from a start vertex.",
+            "Gotcha-Point": "The accepted edges are the MST, so recording them at the point where you add to the weight sum gives the edge list for free. On a disconnected graph the V-1 break never fires, and you get a minimum spanning forest."
+          },
+          "segment_index": 2,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Find the MST Weight (Kruskal) \u2014 Follow-up (MST Edges)"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-11-08"
+                }
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Low"
+                }
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Flatten the adjacency list into edges (weight, u, v), keeping only `node < neighbour` to dedupe.\n- Sort edges by weight ascending.\n- Build a DSU over V vertices.\n- For each edge, if the ultimate parents differ, record the edge in the MST and union by size.\n- Break once the MST holds V-1 edges.\n- O(E log E) time, O(E + V) space."
+                    }
+                  }
+                ]
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "6. DSU & MST"
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "None on the logic. Needed a hint to find the `node < neighbour` dedupe condition."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Enumerate every subset of V-1 edges, keep those that are connected and acyclic, and pick the minimum total weight.\n- This is exponential, roughly C(E, V-1) subsets.\n- Prim's with a priority queue is an alternative that builds the tree from a start vertex."
+                    }
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "The accepted edges are the MST, so recording them at the point where you add to the weight sum gives the edge list for free. On a disconnected graph the V-1 break never fires, and you get a minimum spanning forest."
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Find the MST Weight (Kruskal) \u2014 Follow-up (MST Edges)' already exists in database (page_id: 41206e0f-9465-8183-b3c0-f94729db9942)."
+        }
+      ]
+    },
+    "1PhgzJkR2tHatq1NLvqbZsGziwdDFbym5": {
+      "status": "success",
+      "content_hash": "04eead55725d219943894e4dde1e4e20845d6b98690a569b6095409aa847a07e"
+    },
+    "1NW3sKGqGJmR_O1WwYpN-6hwpzrL-oc0_": {
+      "status": "needs_review",
+      "content_hash": "b91663b8617130c71dddef14557d575964c1ade4538ff83efb20c5a5ee864312",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Find the MST Weight",
+            "Type": "First Solve",
+            "Date solved": "2026-11-08",
+            "Revision Needed": "Mid",
+            "Optimal Approach": "- Use Prim's algorithm: a greedy approach that grows the MST from node 0.\n- Keep a min-heap of {weight, node} holding the edges leaving the visited set.\n- Pop the cheapest entry. If its node is already visited, skip it.\n- Otherwise mark it visited, add its weight to the sum, and push the unvisited neighbours.\n- Stop when the heap is empty, since the graph is connected.\n- O(E log E) time, O(V + E) space.",
+            "Bucket": "6. DSU & MST",
+            "My Mistake": "Did not derive it independently; the approach was taught beforehand. No bugs in the final code.",
+            "Topic": "Graphs",
+            "Brute-Force": "- Enumerate every subset of V-1 edges out of E edges.\n- Keep only subsets that connect all vertices with no cycle.\n- Return the minimum total weight among them.\n- Exponential time, O(C(E, V-1)), so not feasible.",
+            "Gotcha-Point": "Mark nodes visited on pop, not on push. The heap holds duplicate and stale entries, and the first (cheapest) pop of a node is the one that counts."
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "1b106e0f-9465-82b4-bfe9-072dc64998f1"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Find the MST Weight"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-11-08"
+                }
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Use Prim's algorithm: a greedy approach that grows the MST from node 0.\n- Keep a min-heap of {weight, node} holding the edges leaving the visited set.\n- Pop the cheapest entry. If its node is already visited, skip it.\n- Otherwise mark it visited, add its weight to the sum, and push the unvisited neighbours.\n- Stop when the heap is empty, since the graph is connected.\n- O(E log E) time, O(V + E) space."
+                    }
+                  }
+                ]
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "6. DSU & MST"
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Did not derive it independently; the approach was taught beforehand. No bugs in the final code."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Enumerate every subset of V-1 edges out of E edges.\n- Keep only subsets that connect all vertices with no cycle.\n- Return the minimum total weight among them.\n- Exponential time, O(C(E, V-1)), so not feasible."
+                    }
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Mark nodes visited on pop, not on push. The heap holds duplicate and stale entries, and the first (cheapest) pop of a node is the one that counts."
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Find the MST Weight' already exists in database (page_id: 41206e0f-9465-8183-b3c0-f94729db9942)."
+        }
+      ]
     }
   }
 }
