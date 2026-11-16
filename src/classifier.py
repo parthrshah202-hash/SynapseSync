@@ -89,35 +89,20 @@ def is_genuine_export(content: str) -> bool:
 
 
 def classify_domain(content: str) -> str | None:
-    """
-    Classifies a transcript's content deterministically.
-
-    Returns:
-        "DSA", "SQL", or None if no match.
-    """
-
-    # Require a Notion Notes block.
-    # Supports hyphen, en dash, em dash, and flexible whitespace.
-    if not re.search(
-        r"[-—–]\s*Notion\s*Notes",
-        content,
-        re.IGNORECASE
-    ):
+    if not re.search(r"Notion\s*Notes", content, re.IGNORECASE):
         return None
 
-    # Check for DSA.
+    # SQL first, using strong signals only (uppercase keywords, close together)
+    if re.search(r"\bDataLemur\b", content, re.IGNORECASE) or \
+       re.search(r"\bSELECT\b[\s\S]{0,400}?\bFROM\b", content):
+        return "SQL"
+
     if (
-        re.search(r"(?m)^\s*\d+\.\s", content)
-        or re.search(r"\bLC\s*\d+\b", content, re.IGNORECASE)
+        re.search(r"\bLC\s*-?\s*\d+\b", content, re.IGNORECASE)
+        or re.search(r"\bLeetCode\b", content, re.IGNORECASE)
+        or re.search(r"(?mi)^\W*(brute[\s-]?force|optimal approach|gotcha)", content)
+        or re.search(r"(?m)^\s*\d+\.\s", content)
     ):
         return "DSA"
-
-    # Check for SQL.
-    has_select = re.search(r"\bSELECT\b", content, re.IGNORECASE)
-    has_from = re.search(r"\bFROM\b", content, re.IGNORECASE)
-    has_datalemur = re.search(r"\bDataLemur\b", content, re.IGNORECASE)
-
-    if (has_select and has_from) or has_datalemur:
-        return "SQL"
 
     return None
