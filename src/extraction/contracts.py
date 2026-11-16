@@ -127,6 +127,7 @@ def normalize_dsa_topic(value: Any) -> str:
         "graphs": "Graphs",
         "graph": "Graphs",
         "DP": "Dynamic Programming",
+        "dp": "Dynamic Programming", 
     }
 
     if val_lower in topic_map:
