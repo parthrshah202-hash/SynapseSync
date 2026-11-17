@@ -1855,6 +1855,105 @@
     "1IkgjpqUCsHkKoryzEKx-bNPo2UZjg9DE": {
       "status": "success",
       "content_hash": "31e1b3292aeceed9b91627d380a4a74e8c4a5cc72586ed350dbf19d1fae44d61"
+    },
+    "12Wg9VJhfuTJhkSU9RopvsNbus3pRDZ3B": {
+      "status": "success",
+      "content_hash": "74a5c0fb0bcf69ae2a3e41d05e897031218e34ad5e90632b0830ee9499416ba9"
+    },
+    "1kAv44cbiUeQw2tIRrBlcLiHXcPXteQHH": {
+      "status": "needs_review",
+      "content_hash": "85df59bd97c071392ff696975d1e3609162fcd9d94aa19168eb77f905e443ba0",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Climbing Stairs",
+            "Type": "First Solve",
+            "Date solved": "2026-11-16",
+            "Optimal Approach": "- The last move into step n is either a 1-step from n-1 or a 2-step from n-2\n- This gives the recurrence ways(n) = ways(n-1) + ways(n-2), with base cases ways(0) = ways(1) = 1\n- Memoization or tabulation stores each state once, which is O(n) time and O(n) space\n- Each state depends only on the previous two, so keep just two rolling variables\n- Iterate from 2 to n, updating curr = prev1 + prev2 and shifting the variables\n- O(N) time, O(1) space",
+            "Bucket": "1. Foundations & 1D DP",
+            "Gotcha-Point": "It is Fibonacci in disguise, and the reason is the last-move argument (arrive from n-1 or n-2). Space optimisation comes from noticing the state depends on only the last two values.",
+            "My Mistake": "None",
+            "Revision Needed": "Low",
+            "Brute-Force": "- Plain recursion: ways(n) = ways(n-1) + ways(n-2), with ways(0) = ways(1) = 1\n- Each call branches into two, so the recursion tree blows up with repeated subproblems\n- Time O(2^n), space O(n) recursion stack",
+            "Topic": "Dynamic Programming"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "5b306e0f-9465-83be-afbc-07769bc1c6dd"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Climbing Stairs"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-11-16"
+                }
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- The last move into step n is either a 1-step from n-1 or a 2-step from n-2\n- This gives the recurrence ways(n) = ways(n-1) + ways(n-2), with base cases ways(0) = ways(1) = 1\n- Memoization or tabulation stores each state once, which is O(n) time and O(n) space\n- Each state depends only on the previous two, so keep just two rolling variables\n- Iterate from 2 to n, updating curr = prev1 + prev2 and shifting the variables\n- O(N) time, O(1) space"
+                    }
+                  }
+                ]
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "1. Foundations & 1D DP"
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "It is Fibonacci in disguise, and the reason is the last-move argument (arrive from n-1 or n-2). Space optimisation comes from noticing the state depends on only the last two values."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "None"
+                    }
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Low"
+                }
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Plain recursion: ways(n) = ways(n-1) + ways(n-2), with ways(0) = ways(1) = 1\n- Each call branches into two, so the recursion tree blows up with repeated subproblems\n- Time O(2^n), space O(n) recursion stack"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Climbing Stairs' already exists in database (page_id: 41b06e0f-9465-8104-8d99-ec1b915c242f)."
+        }
+      ]
     }
   }
 }
