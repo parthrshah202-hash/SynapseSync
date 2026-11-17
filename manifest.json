@@ -1954,6 +1954,105 @@
           "reason": "First Solve entry for 'Climbing Stairs' already exists in database (page_id: 41b06e0f-9465-8104-8d99-ec1b915c242f)."
         }
       ]
+    },
+    "1LInE6MrngJKrVIdpbT7K1hGlHJ2_lA_i": {
+      "status": "success",
+      "content_hash": "ae35ee810e9d9131f1fc01bc029ac19f9c669b2a459aff74260854a48cc26190"
+    },
+    "15amQOwQjYHFbMS42CjbHAUWOFgt-GfZo": {
+      "status": "needs_review",
+      "content_hash": "c0778f3d65aba2f03db66023ada3373683e9ffd6dff76e34eec909059566d45c",
+      "payloads": [
+        {
+          "status": "needs_review",
+          "domain": "DSA",
+          "type": "First Solve",
+          "data": {
+            "Problem": "Frog Jump with K Distances",
+            "Type": "First Solve",
+            "Date solved": "2026-11-17",
+            "Optimal Approach": "- Define `dp[i]` as the min energy to reach step i from step 0\n- `dp[0] = 0`, and iterate i from 1 to n-1\n- For each i, try all j from max(0, i-k) to i-1: `dp[i] = min(dp[j] + |h[j] - h[i]|)`\n- Answer is `dp[n-1]`\n- Space can drop to O(min(N, K)) with a circular buffer using `index % k`\n- O(N\u00b7K) time, O(N) space",
+            "Gotcha-Point": "Generalizing the 2-way Frog Jump to K ways turns the two-line min into a loop over the window [max(0, i-k), i-1]. Define the state and the base case in the same direction, and clamp the lower bound with `max(0, i-k)`.",
+            "My Mistake": "Mixed the state direction (base case at 0 but loop going forward to i+1..i+k), initialized min with -1 instead of INT_MAX, had no bounds check on j, clamped the loop variable inside the loop, and added redundant `i==1` and `n==1` special cases. Did not write the circular-buffer version.",
+            "Brute-Force": "- Recursion: `f(i)` is the min energy to reach step i from step 0, trying every previous step j in [i-k, i-1]\n- `f(i) = min over j of (f(j) + |h[j] - h[i]|)`, with base case `f(0) = 0`\n- Overlapping subproblems make it exponential in time\n- O(N) recursion stack depth",
+            "Bucket": "1. Foundations & 1D DP",
+            "Topic": "Dynamic Programming",
+            "Revision Needed": "Mid"
+          },
+          "segment_index": 1,
+          "notion_payload": {
+            "parent": {
+              "type": "data_source_id",
+              "data_source_id": "5b306e0f-9465-83be-afbc-07769bc1c6dd"
+            },
+            "properties": {
+              "Problem Name": {
+                "title": [
+                  {
+                    "text": {
+                      "content": "Frog Jump with K Distances"
+                    }
+                  }
+                ]
+              },
+              "Date solved": {
+                "date": {
+                  "start": "2026-11-17"
+                }
+              },
+              "Optimal Approach": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Define `dp[i]` as the min energy to reach step i from step 0\n- `dp[0] = 0`, and iterate i from 1 to n-1\n- For each i, try all j from max(0, i-k) to i-1: `dp[i] = min(dp[j] + |h[j] - h[i]|)`\n- Answer is `dp[n-1]`\n- Space can drop to O(min(N, K)) with a circular buffer using `index % k`\n- O(N\u00b7K) time, O(N) space"
+                    }
+                  }
+                ]
+              },
+              "Gotcha-Point": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Generalizing the 2-way Frog Jump to K ways turns the two-line min into a loop over the window [max(0, i-k), i-1]. Define the state and the base case in the same direction, and clamp the lower bound with `max(0, i-k)`."
+                    }
+                  }
+                ]
+              },
+              "My Mistake": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "Mixed the state direction (base case at 0 but loop going forward to i+1..i+k), initialized min with -1 instead of INT_MAX, had no bounds check on j, clamped the loop variable inside the loop, and added redundant `i==1` and `n==1` special cases. Did not write the circular-buffer version."
+                    }
+                  }
+                ]
+              },
+              "Brute-Force": {
+                "rich_text": [
+                  {
+                    "text": {
+                      "content": "- Recursion: `f(i)` is the min energy to reach step i from step 0, trying every previous step j in [i-k, i-1]\n- `f(i) = min over j of (f(j) + |h[j] - h[i]|)`, with base case `f(0) = 0`\n- Overlapping subproblems make it exponential in time\n- O(N) recursion stack depth"
+                    }
+                  }
+                ]
+              },
+              "Pattern / Bucket": {
+                "multi_select": [
+                  {
+                    "name": "1. Foundations & 1D DP"
+                  }
+                ]
+              },
+              "Revision Needed": {
+                "select": {
+                  "name": "Mid"
+                }
+              }
+            }
+          },
+          "reason": "First Solve entry for 'Frog Jump with K Distances' already exists in database (page_id: 41b06e0f-9465-8164-94f6-c8f3b6a51895)."
+        }
+      ]
     }
   }
 }
